@@ -2,8 +2,7 @@ import argparse
 import io
 import sys
 from dataclasses import dataclass
-from itertools import cycle, starmap, filterfalse
-import wordninja
+from itertools import cycle, starmap
 
 # constants
 A = ord('A')
@@ -22,13 +21,8 @@ IC_ENGLISH = sum(f * f for f in FREQ_ENGLISH) * 26
 
 
 def alpha_only(text) -> str:
-    """get all capitalized alpha only text"""
+    """ get all capitalized alpha only text """ 
     return ''.join(filter(lambda c: c.isalpha(), text)).upper()
-
-
-def split(no_space_text):
-    """split no_space_text with wordninja, see https://github.com/keredson/wordninja for details"""
-    return ' '.join(wordninja.split(no_space_text))
 
 
 class Vigenere:
@@ -37,18 +31,18 @@ class Vigenere:
 
     @staticmethod
     def get_cipher(p, k) -> str:
-        """encrypt character p using character k as key"""
+        """ encrypt character p using character k as key """ 
         return chr(A + ((ord(p) - A) + (ord(k) - A)) % 26)
 
     @staticmethod
     def get_plain(c, k) -> str:
-        """decrypt character c using character k"""
+        """ decrypt character c using character k """ 
         return chr(A + ((ord(c) - A) - (ord(k) - A)) % 26)
 
     @staticmethod
     def extract_extra(text):
-        """extract spaces and other non-alpha character's positional information"""
-        return list(filterfalse(lambda x: x[1].isalpha(), enumerate(text)))
+        """ extract spaces and other non-alpha character's positional information """ 
+        return list(filter(lambda x: not x[1].isalpha(), enumerate(text)))
 
     @staticmethod
     def add_extra(text, extra):
@@ -63,28 +57,29 @@ class Vigenere:
         cipher_text = ''.join(starmap(self.get_cipher, zip(plain_text, cycle(self.keyword))))
         return self.add_extra(cipher_text, extra) if extra else cipher_text
 
-    def decrypt(self, cipher_text, keep_extra=False, auto_split=False) -> str:
+    def decrypt(self, cipher_text, keep_extra=False) -> str:
         extra = self.extract_extra(cipher_text) if keep_extra else []
         cipher_text = alpha_only(cipher_text)
         plain_text = ''.join(starmap(self.get_plain, zip(cipher_text, cycle(self.keyword))))
-        if extra:
-            return self.add_extra(plain_text, extra)
-        return split(plain_text) if auto_split else plain_text
+        return self.add_extra(plain_text, extra) if extra else plain_text
 
     def encrypt_file(self, in_path, out_path, keep_extra=True):
         with open(in_path, 'r') as in_file, open(out_path, 'w') as out_file:
-            out_file.write(self.encrypt(in_file.read(), keep_extra))
+            cipher_text = self.encrypt(in_file.read(), keep_extra)
+            out_file.write(cipher_text)
 
-    def decrypt_file(self, in_path, out_path, keep_extra=True, auto_split=False):
+    def decrypt_file(self, in_path, out_path, keep_extra=True):
         with open(in_path, 'r') as in_file, open(out_path, 'w') as out_file:
-            plain_text = self.decrypt(in_file.read(), keep_extra, auto_split)
+            plain_text = self.decrypt(in_file.read(), keep_extra)
             out_file.write(plain_text)
 
 
 def index_of_coincidence(text) -> float:
-    """calculate IC(index of coincidence) of given string sequence"""
+    """ calculate IC(index of coincidence) of given string sequence
+    Check this for details: https://en.wikipedia.org/wiki/Index_of_coincidence"""
     n = len(text)
-    if n <= 1: return 26
+    if n <= 1:
+        return 26  # or should I raise an error here?
     counts = [0 for _ in range(26)]
     for c in text:
         counts[ord(c) - A] += 1
@@ -92,7 +87,7 @@ def index_of_coincidence(text) -> float:
 
 
 def group_with_length(text, n) -> list[list[str]]:
-    """i_th item falls into (i % length)_th group"""
+    """ i_th item falls into (i % length)_th group """ 
     results = [[] for _ in range(n)]
     for i, c in enumerate(text):
         results[i % n].append(c)
@@ -112,8 +107,8 @@ class Key:
 
 
 def guess_key_length(text) -> list[KeyInfo]:
-    """compare AVERAGE IC of every key length in [1, MAX_KEY_LENGTH),
-     return the top MAX_KEY_CANDIDATE ones close to IC_ENGLISH"""
+    """ compare AVERAGE IC of every key length in [1, MAX_KEY_LENGTH),
+     return the top MAX_KEY_CANDIDATE ones close to IC_ENGLISH """ 
     key_info = []
     for length in range(1, min(MAX_KEY_LENGTH, len(text))):
         substrings = group_with_length(text, length)
@@ -123,16 +118,16 @@ def guess_key_length(text) -> list[KeyInfo]:
 
 
 def correlation_of(text) -> float:
-    """correlation between the text letter frequencies and the relative letter frequencies for normal English text"""
+    """ correlation between the text letter frequencies and the relative letter frequencies for normal English text """
     n = len(text)
-    counts = [0 for _ in range(26)]
+    counts = [0] * 26
     for c in text:
         counts[ord(c) - A] += 1
     return sum(counts[i] / n * FREQ_ENGLISH[i] for i in range(26))
 
 
 def get_single_key(text) -> str:
-    """test every character as key for given text, use the one that has highest correlation"""
+    """ test every character as key for given text, use the one that has the highest correlation """
     correlations, max_idx = [], 0
     for i in range(26):
         v = Vigenere(chr(A + i))
@@ -142,7 +137,7 @@ def get_single_key(text) -> str:
     return chr(A + max_idx)
 
 
-def crack_virginia(cipher_text, save_to: io.TextIOBase, keep_extra, auto_split):
+def crack_virginia(cipher_text, save_to: io.TextIOBase, keep_extra):
     extra = Vigenere.extract_extra(cipher_text) if keep_extra else []
     cipher_text, keys = alpha_only(cipher_text), []
 
@@ -175,25 +170,25 @@ def crack_virginia(cipher_text, save_to: io.TextIOBase, keep_extra, auto_split):
     for key in keys:
         save_to.write(f'Decrypt using {key}:\n')
         v = Vigenere(key.key)
-        save_to.write(v.decrypt(cipher_text, keep_extra, auto_split))
+        save_to.write(v.decrypt(cipher_text, keep_extra))
         save_to.write('\n\n')
 
 
-def normal_mode(in_file, out_file, key, encrypt, remove_extra, auto_split=False, **kwargs):
+def normal_mode(in_file, out_file, key, encrypt, remove_extra, **kwargs):
     v = Vigenere(key)
     keep_extra = not remove_extra
     input_text = in_file.read()
     if encrypt:
         result_text = v.encrypt(input_text, keep_extra)
     else:
-        result_text = v.decrypt(input_text, keep_extra, auto_split)
+        result_text = v.decrypt(input_text, keep_extra)
     out_file.write(result_text)
 
 
-def cracking_mode(in_file, out_file, remove_extra, auto_split=False, **kwargs):
+def cracking_mode(in_file, out_file, remove_extra, **kwargs):
     keep_extra = not remove_extra
     input_text = in_file.read()
-    crack_virginia(input_text, out_file, keep_extra, auto_split)
+    crack_virginia(input_text, out_file, keep_extra)
 
 
 if __name__ == '__main__':
@@ -208,8 +203,6 @@ if __name__ == '__main__':
     parser_normal.set_defaults(func=normal_mode)
 
     parser_crack = subparsers.add_parser('crack', help='cracking mode')
-    parser_crack.add_argument('-s', '--auto_split', action='store_const', const=True,
-                              help='auto split result if needed')
     parser_crack.set_defaults(func=cracking_mode)
 
     for subparser in [parser_normal, parser_crack]:
