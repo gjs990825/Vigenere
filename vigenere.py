@@ -20,8 +20,8 @@ FREQ_ENGLISH = [0.08167, 0.01492, 0.02782, 0.04253, 0.12702, 0.02228,
 IC_ENGLISH = sum(f * f for f in FREQ_ENGLISH) * 26
 
 
-def alpha_only(text) -> str:
-    """ get all capitalized alpha only text """ 
+def alpha_only(text):  # -> str:
+    """ get all capitalized alpha only text """
     return ''.join(filter(lambda c: c.isalpha(), text)).upper()
 
 
@@ -30,18 +30,18 @@ class Vigenere:
         self.keyword = alpha_only(keyword)
 
     @staticmethod
-    def get_cipher(p, k) -> str:
-        """ encrypt character p using character k as key """ 
+    def get_cipher(p, k):  # -> str:
+        """ encrypt character p using character k as key """
         return chr(A + ((ord(p) - A) + (ord(k) - A)) % 26)
 
     @staticmethod
-    def get_plain(c, k) -> str:
-        """ decrypt character c using character k """ 
+    def get_plain(c, k):  # -> str:
+        """ decrypt character c using character k """
         return chr(A + ((ord(c) - A) - (ord(k) - A)) % 26)
 
     @staticmethod
     def extract_extra(text):
-        """ extract spaces and other non-alpha character's positional information """ 
+        """ extract spaces and other non-alpha character's positional information """
         return list(filter(lambda x: not x[1].isalpha(), enumerate(text)))
 
     @staticmethod
@@ -51,13 +51,13 @@ class Vigenere:
             text.insert(*e)
         return ''.join(text)
 
-    def encrypt(self, plain_text, keep_extra=False) -> str:
+    def encrypt(self, plain_text, keep_extra=False):  # -> str:
         extra = self.extract_extra(plain_text) if keep_extra else []
         plain_text = alpha_only(plain_text)
         cipher_text = ''.join(starmap(self.get_cipher, zip(plain_text, cycle(self.keyword))))
         return self.add_extra(cipher_text, extra) if extra else cipher_text
 
-    def decrypt(self, cipher_text, keep_extra=False) -> str:
+    def decrypt(self, cipher_text, keep_extra=False):  # -> str:
         extra = self.extract_extra(cipher_text) if keep_extra else []
         cipher_text = alpha_only(cipher_text)
         plain_text = ''.join(starmap(self.get_plain, zip(cipher_text, cycle(self.keyword))))
@@ -74,7 +74,7 @@ class Vigenere:
             out_file.write(plain_text)
 
 
-def index_of_coincidence(text) -> float:
+def index_of_coincidence(text):  # -> float:
     """ calculate IC(index of coincidence) of given string sequence
     Check this for details: https://en.wikipedia.org/wiki/Index_of_coincidence"""
     n = len(text)
@@ -86,8 +86,8 @@ def index_of_coincidence(text) -> float:
     return sum(c * (c - 1) for c in counts) / (n * (n - 1) / 26)
 
 
-def group_with_length(text, n) -> list[list[str]]:
-    """ i_th item falls into (i % length)_th group """ 
+def group_with_length(text, n):  # -> list[list[str]]:
+    """ i_th item falls into (i % length)_th group """
     results = [[] for _ in range(n)]
     for i, c in enumerate(text):
         results[i % n].append(c)
@@ -106,9 +106,9 @@ class Key:
     ic: float
 
 
-def guess_key_length(text) -> list[KeyInfo]:
+def guess_key_length(text):  # -> list[KeyInfo]:
     """ compare AVERAGE IC of every key length in [1, MAX_KEY_LENGTH),
-     return the top MAX_KEY_CANDIDATE ones close to IC_ENGLISH """ 
+     return the top MAX_KEY_CANDIDATE ones close to IC_ENGLISH """
     key_info = []
     for length in range(1, min(MAX_KEY_LENGTH, len(text))):
         substrings = group_with_length(text, length)
@@ -117,7 +117,7 @@ def guess_key_length(text) -> list[KeyInfo]:
     return sorted(key_info, key=lambda x: abs(x.ic - IC_ENGLISH))[:10]
 
 
-def correlation_of(text) -> float:
+def correlation_of(text):  # -> float:
     """ correlation between the text letter frequencies and the relative letter frequencies for normal English text """
     n = len(text)
     counts = [0] * 26
@@ -126,7 +126,7 @@ def correlation_of(text) -> float:
     return sum(counts[i] / n * FREQ_ENGLISH[i] for i in range(26))
 
 
-def get_single_key(text) -> str:
+def get_single_key(text):  # -> str:
     """ test every character as key for given text, use the one that has the highest correlation """
     correlations, max_idx = [], 0
     for i in range(26):
@@ -206,7 +206,7 @@ if __name__ == '__main__':
     parser_crack.set_defaults(func=cracking_mode)
 
     for subparser in [parser_normal, parser_crack]:
-        subparser.add_argument('--remove_extra', action='store_const', const=True,
+        subparser.add_argument('-r', '--remove_extra', action='store_const', const=True,
                                help='remove extra information in text(spaces and other non-alpha characters)')
         subparser.add_argument('in_file', nargs='?', type=argparse.FileType('r'), help='input file')
         subparser.add_argument('out_file', nargs='?', type=argparse.FileType('w'), help='output file')
