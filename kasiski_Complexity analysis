@@ -1,0 +1,32 @@
+key长度:3
+运行时间：0.4968564510345459
+内存使用：0.0294 GB
+key长度:4
+运行时间:1.2528324127197266
+内存使用:0.0295 GB
+key长度:5
+运行时间:0.345717191696167
+内存使用:0.0295 GB
+key长度:6
+运行时间:5.921341419219971
+内存使用:0.0347 GB
+key长度:7
+运行时间:0.5103759765625
+内存使用:0.1101 GB
+
+原文
+Differential Privacy is the state-of-the-art goal for the problem of privacy-preserving data release and privacy-preserving data mining. Existing techniques using differential privacy, however, cannot effectively handle the publication of high-dimensional data. In particular, when the input dataset contains a large number of attributes, existing methods incur higher computing complexity and lower information to noise ratio, which renders the published data next to useless. This proposal aims to reduce computing complexity and signal to noise ratio. The starting point is to approximate the full distribution of high-dimensional dataset with a set of low-dimensional marginal distributions via optimizing score function and reducing sensitivity, in which generation of noisy conditional distributions with differential privacy is computed in a set of low-dimensional subspaces, and then, the sample tuples from the noisy approximation distribution are used to generate and release the synthetic dataset. Some crucial science problems would be investigated below: (i) constructing a low k-degree Bayesian network over the high-dimensional dataset via exponential mechanism in differential privacy, where the score function is optimized to reduce the sensitivity using mutual information, equivalence classes in maximum joint distribution and dynamic programming; (ii)studying the algorithm to compute a set of noisy conditional distributions from joint distributions in the subspace of Bayesian network, via the Laplace mechanism of differential privacy. (iii)exploring how to generate synthetic data from the differentially private Bayesian network and conditional distributions, without explicitly materializing the noisy global distribution. The proposed solution may have theoretical and technical significance for synthetic data generation with differential privacy on business prospects.
+key
+infosec
+密文:
+Lvktwvgvgnod Ttqifqq mu buj glevm-bk-hzi-czg lcsp hwe yvw ttwoqse sh xenjsga-xejgwvxqal rsxc zrqsswg iai djmxipd-djiumeawfk figf aarkvt. Jlawvqal hwgjvvviww wavsu vmhnrwsfxkiy ufazckl, mcoixme, hofrqb rktwgvqijzq lcvqqs llg xhgzagcbvtb gj jqtm-raqgvfncfen lnyo. Ar rieywuynie, bvwr vpr nbhyv lnyokiv kbshsmpa n qojkg vhrpwv qn nyhjmdcgjg, wbkagnby qgbutrk mpkhw vakjme hcetwbvsu usoxyjlaxa iai zgagz vstgvoigncf xq vbngw vcbvt, kzmep ejbvita gms hydtvxvwh figf bwbv bb zgwpgaf. Yvaw rzbucken ivrg ls tmqzqw gquczhari kbrddizqgd ofh uqtsod xq vbngw vcbvt. Hzi ubnwhari xbnbl mu bb fdhvqfvroli vpr kidp fqfyfafwbvtb gj jqtm-raqgvfncfen lnyokiv evyv s wgb bk zga-fqzjbkmqvnq asviqafz vmubenpmxkwax jae qxgnaadkvt xqgvg nhsqlmqv nsr jifcpnby wgvfnhazkbl, nb olkku lsfitigncf sh vbngq gqvqnhaspiy iwkxtqozhaspa jnhz hknsjfwrvqnq djmxipd wk gquczhwh kv n xsl sh tbb-raqgvfncfen ahggheemf, fbv xjma, yvw wcucqs lyrtrx tjso buj bgmug nudjszqzfhasp lvxhjmdcgncf etm hxsv xq orssjevm nsr jinmnxs llg alshzivqp ioleumg. Xcei ezhhwsp ukvjbui rzbgzwqu ebzzv fg qaaskxkonysv fgtbb: (w) uspagwiuxkvt f zga m-lrlfwi Diljgaep vrykgvm wijf llg pvlv-vmomaxwgrct qfhswgb ino wbrwajblmct zjqzepqfr wf hknsjfwrvqnq djmxipd, kzitm gms kgqzr kifgvqbs wk srbvrwrif bb wsvyem gms kipavywnmvg hxwfk ocgzod mpnbwasxkwa, jemmxiyjbui etnxgww kv zflaqwu wtwfx fqfyfafwbvtb srf llsoeme xetujeouvsu; (am)ubhimari buj odkqzvyve xq kbrdmxg i fjh gj pwvxm usplvywgrct qnglvkjhywgru neta bskvg iwkxtqozhaspa vs hzi ucoxdsgg ws Goqiuqns bwxywep, jae vpr Qohpckr rsulcvvxa gj fqsksjipbvfz hvkdnhm. (amk)mkuzgvkvt mco xq orssjevm fdbllgbvh rsxc neta llg lvktwvgvgnodpa xenjsxg Jndskmcv ajhosts nsr usplvywgrct qnglvkjhywgru, evyvgyv mkuzagkbyd asxgzvfzadkvt yvw rqqfd udsdiy iwkxtqozhasp. Buj djsrwfjr ksncgncf qcg ufjw xjmbwslmeiy fbv xgkuswuen avlbajkknsqw jqz fdbllgbvh rsxc orssjevqbs kaxj lvktwvgvgnod ttqifqq sp jhxwfiua cwcktgkgx.
+--------------------------------------
+开始破解
+key长度
+7
+破解后的密文为:
+Differential Privacy is the state-of-the-art goal for the problem of privacy-preserving data release and privacy-preserving data mining. Existing techniques using differential privacy, however, cannot effectively handle the publication of high-dimensional data. In particular, when the input dataset contains a large number of attributes, existing methods incur higher computing complexity and lower information to noise ratio, which renders the published data next to useless. This proposal aims to reduce computing complexity and signal to noise ratio. The starting point is to approximate the full distribution of high-dimensional dataset with a set of low-dimensional marginal distributions via optimizing score function and reducing sensitivity, in which generation of noisy conditional distributions with differential privacy is computed in a set of low-dimensional subspaces, and then, the sample tuples from the noisy approximation distribution are used to generate and release the synthetic dataset. Some crucial science problems would be investigated below: (i) constructing a low k-degree Bayesian network over the high-dimensional dataset via exponential mechanism in differential privacy, where the score function is optimized to reduce the sensitivity using mutual information, equivalence classes in maximum joint distribution and dynamic programming; (ii)studying the algorithm to compute a set of noisy conditional distributions from joint distributions in the subspace of Bayesian network, via the Laplace mechanism of differential privacy. (iii)exploring how to generate synthetic data from the differentially private Bayesian network and conditional distributions, without explicitly materializing the noisy global distribution. The proposed solution may have theoretical and technical significance for synthetic data generation with differential privacy on business prospects.
+密钥为:
+INFOSEC
+运行时间:0.5103759765625
+内存使用:0.1101 GB
